@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::{
     net,
     requests::{Request, ResponseResult},
-    types::{ChatId, Message, ParseMode, ReplyMarkup},
+    types::{ChatId, Message, ParseMode, ReplyMarkup, MessageEntity},
     Bot,
 };
 
@@ -18,6 +18,7 @@ pub struct SendMessage {
     pub chat_id: ChatId,
     pub text: String,
     pub parse_mode: Option<ParseMode>,
+    pub entities: Option<Vec<MessageEntity>>,
     pub disable_web_page_preview: Option<bool>,
     pub disable_notification: Option<bool>,
     pub reply_to_message_id: Option<i32>,
@@ -44,6 +45,7 @@ impl SendMessage {
             chat_id: chat_id.into(),
             text: text.into(),
             parse_mode: None,
+            entities: None,
             disable_web_page_preview: None,
             disable_notification: None,
             reply_to_message_id: None,
@@ -79,6 +81,14 @@ impl SendMessage {
     /// crate::types::ParseMode
     pub fn parse_mode(mut self, value: ParseMode) -> Self {
         self.parse_mode = Some(value);
+        self
+    }
+
+    /// List of special entities that appear in message text, which can be specified instead of parse_mode.
+    ///
+    /// Vec<crate::types::MessageEntity>
+    pub fn entities(mut self, value: Vec<MessageEntity>) -> Self {
+        self.entities = Some(value);
         self
     }
 
