@@ -3,7 +3,7 @@ use serde::Serialize;
 use crate::{
     net,
     requests::{Request, ResponseResult},
-    types::{ChatId, InlineKeyboardMarkup, Message, ParseMode},
+    types::{ChatId, InlineKeyboardMarkup, Message, ParseMode, MessageEntity},
     Bot,
 };
 
@@ -23,6 +23,7 @@ pub struct EditMessageText {
     message_id: i32,
     text: String,
     parse_mode: Option<ParseMode>,
+    entities: Option<Vec<MessageEntity>>,
     disable_web_page_preview: Option<bool>,
     reply_markup: Option<InlineKeyboardMarkup>,
 }
@@ -50,6 +51,7 @@ impl EditMessageText {
             message_id,
             text,
             parse_mode: None,
+            entities: None,
             disable_web_page_preview: None,
             reply_markup: None,
         }
@@ -88,6 +90,14 @@ impl EditMessageText {
     /// [bold, italic, fixed-width text or inline URLs]: https://core.telegram.org/bots/api#formatting-options
     pub fn parse_mode(mut self, val: ParseMode) -> Self {
         self.parse_mode = Some(val);
+        self
+    }
+
+    /// List of special entities that appear in message text, which can be specified instead of parse_mode.
+    ///
+    /// Vec<crate::types::MessageEntity>
+    pub fn entities(mut self, value: Vec<MessageEntity>) -> Self {
+        self.entities = Some(value);
         self
     }
 
